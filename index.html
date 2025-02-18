@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JAX Compiler</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -18,7 +18,7 @@
         <div class="editor-output">
           <!-- Code Editor Section -->
 
-          <textarea id="code" name="code" placeholder="Write your Python code here...">{{ code if code else '' }}</textarea>
+          <label for="code"></label><textarea id="code" name="code" placeholder="Write your Python code here...">{{ code if code else '' }}</textarea>
 
           <!-- Output Section -->
           <div class="output">
