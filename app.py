@@ -1,14 +1,16 @@
 import subprocess
 import sys
 import os
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
+from werkzeug.utils import secure_filename
+from flask_cors import CORS
 
-# Set template folder to the current working directory
 app = Flask(__name__, template_folder=os.getcwd())
+CORS(app)  # Enable CORS to allow cross-origin requests
 
 @app.route('/')
 def index():
-    return render_template('index.html')  # Flask will now look for 'index.html' in the root folder
+    return render_template('index.html')  # Serve the frontend
 
 @app.route('/run', methods=['POST'])
 def run_code():
@@ -16,33 +18,36 @@ def run_code():
         code = request.form.get('code')
 
         if not code:
-            return render_template('index.html', error="No code provided!")
+            return render_template('index.html', error="No code provided!", code=code)
 
-        # Save the code in a temporary Python file
-        with open('temp_code.py', 'w') as file:
-            file.write(code)
+        # Secure filename
+        filename = "temp_code.py"
+        safe_filename = secure_filename(filename)
 
-        # Run the Python file and capture output
         try:
-            result = subprocess.run([sys.executable, 'temp_code.py'], capture_output=True, text=True, timeout=5)
+            # Save code in a temporary file
+            with open(safe_filename, 'w') as file:
+                file.write(code)
 
-            # Check if there is output or error
-            output = result.stdout
-            error = result.stderr
+            # Execute the code safely with a timeout
+            result = subprocess.run(
+                [sys.executable, safe_filename],
+                capture_output=True, text=True, timeout=5
+            )
 
-            if result.returncode != 0:
-                error = f"Error: {error if error else 'Unknown error occurred'}"
-                output = None
+            output = result.stdout if result.returncode == 0 else None
+            error = result.stderr if result.returncode != 0 else None
 
         except subprocess.TimeoutExpired:
             output = None
-            error = 'Error: Timeout exceeded while executing the code.'
+            error = "Error: Timeout exceeded while executing the code."
         except Exception as e:
             output = None
             error = f"An unexpected error occurred: {str(e)}"
-
-        # Clean up by removing the temporary file
-        os.remove('temp_code.py')
+        finally:
+            # Remove the temporary file after execution
+            if os.path.exists(safe_filename):
+                os.remove(safe_filename)
 
         return render_template('index.html', code=code, output=output, error=error)
 

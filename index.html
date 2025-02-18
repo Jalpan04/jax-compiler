@@ -112,5 +112,37 @@
       </div>
     </div>
   </div>
+
+  <script>
+    function runCode() {
+      const code = document.getElementById("code").value;
+      document.getElementById("output").innerText = "Running...";
+      document.getElementById("error").innerText = "";
+
+      fetch('/run', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({ 'code': code })
+      })
+      .then(response => response.text())
+      .then(html => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        // Extract output and error from response
+        const output = doc.querySelector("pre") ? doc.querySelector("pre").innerText : "";
+        const error = doc.querySelector(".error") ? doc.querySelector(".error").innerText : "";
+
+        document.getElementById("output").innerText = output;
+        document.getElementById("error").innerText = error;
+      })
+      .catch(err => {
+        document.getElementById("error").innerText = "Error: " + err.message;
+      });
+    }
+  </script>
+
 </body>
 </html>
