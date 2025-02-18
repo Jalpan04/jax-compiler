@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JAX Compiler</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="main-container">
+
+
+  <div class="content">
+    <div class="header">
+      <h1>JAX Compiler</h1>
+      <form action="/run" method="POST">
+        <div class="editor-output">
+          <!-- Code Editor Section -->
+
+          <textarea id="code" name="code" placeholder="Write your Python code here...">{{ code if code else '' }}</textarea>
+
+          <!-- Output Section -->
+          <div class="output">
+            <h2>Output:</h2>
+            {% if output %}
+
+              <pre>{{ output }}</pre>
+            {% endif %}
+            {% if error %}
+              <h2>Error:</h2>
+              <pre>{{ error }}</pre>
+            {% endif %}
+          </div>
+        </div>
+        <button type="submit">Compile & Run</button>
+      </form>
+    </div>
+
+    <div class="footer">
+      <p>&copy; 2025 JAX Compiler. All rights reserved.</p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
