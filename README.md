@@ -17,7 +17,7 @@ A sleek, web-based Python code editor and execution environment with a modern gl
 
 See JAX Compiler in action:
 
-![Demo GIF](assets/screen record.gif)
+![Demo GIF](assets/working.gif)
 
 ## 🛠️ Technology Stack
 
