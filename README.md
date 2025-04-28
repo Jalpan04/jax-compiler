@@ -1,4 +1,4 @@
-# JAX Compiler
+# JAX Web Compiler
 
 A sleek, web-based Python code editor and execution environment with a modern glass-morphic UI design.
 
@@ -17,7 +17,7 @@ A sleek, web-based Python code editor and execution environment with a modern gl
 
 See JAX Compiler in action:
 
-![Demo GIF](assets/jax_compiler_demo.gif)
+![Demo GIF](assets/screen record.gif)
 
 ## 🛠️ Technology Stack
 
